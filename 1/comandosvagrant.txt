@@ -2,3 +2,4 @@
 
 vagrant init -m 'centos/8' 
 vagrant ssh server2 -c 'ip --color address'
+VAGRANT_EXPERIMENTAL=disks

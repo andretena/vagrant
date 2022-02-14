@@ -14,6 +14,9 @@ Vagrant.configure("2") do |config|
     machine.vm.provision "shell", inline: <<-SHELL
      #{conf['shell']}
     SHELL
+    if name == 'server2'
+      machine.vm.disk :disk, name: 'iscsi', size: '10GB'
+    end
   end
 end 
   config.vm.provision "shell", inline: <<-SHELL
