@@ -1,0 +1,35 @@
+Vagrant.configure("2") do |config|
+  config.vm.define "server1" do |server1|
+    server1.vm.box = "debian/buster64"
+    server1.vm.box_check_update = false
+
+    server1.vm.network "private_network", ip: "171.27.11.150"
+
+    server1.vm.provision "shell", inline: <<-SHELL
+    apt-get update -y
+    apt-get upgrade -y
+    apt-get install -y apache2 git
+    cd /var/www/html
+    rm -rf *
+    git clone https://github.com/4linux/4542-site 
+    sudo service apache2 restart
+    
+    
+  SHELL
+end
+  config.vm.define "server2" do |server2|
+  server2.vm.box = "centos/7"
+  server2.vm.box_check_update = true
+
+  server2.vm.network "private_network", ip: "171.27.11.160"
+  server2.vm.provision "shell", inline: <<-SHELL
+      yum install -y httpd git
+      cd /var/www/html
+      rm -rf *
+      git clone https://github.com/4linux/4542-site .
+      systemctl start httpd
+      systemctl enable httpd
+  SHELL
+  end
+end
+
